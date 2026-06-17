@@ -1,0 +1,35 @@
+Node and NPM keywords
+
+npm init -y //Lägga till NPM till projektet
+npm install typescript --save-dev //installera typescript som developer dependency
+npx tsc --init // execute typescript initialize / lägg till typescript till projektet, lägger till package.json
+npx tsc // kompliera typescript filen
+npm run watch //kör watch scriptet i package.json filen
+
+---------------------------------------------------
+
+Variabler
+
+let = variabl vi kan ändra värdet på
+const kan man inte ändra värdet på.
+var = försök undiv var och använd var och const istället
+
+datatyper
+
+naming convetion : inte 123 t.ex. inte börja på en siffra, variabl namn måste betså av bokstäver eller börja på ett underscore eller ett dollar tecken. 
+standard är camelcase. 
+
+stepover = step by step
+
+any och unknown
+any "stänger av typescxript"
+
+modulo exempel : odd and even, begräna iterreringen av en array, vanligt vid tester
+
+------------------------------------------------------------------
+
+Array och If-satser
+
+.push = sätter till ett element i slutet av arrayen
+.pop = tar bort elementet på slutet av arrayen, tar bort och är inte en referens till slutet
+.shift och .unshift gör samma fast i börjanm av arrayen, unshift lägger till, shift tar bort. 
