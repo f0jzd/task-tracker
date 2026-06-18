@@ -4,9 +4,9 @@ console.log(`
 --------------------------------------------------
 `);
 
-const questions = ["question 1", "question 2", "question 3", "question 4", "question 5"];
-const correctAnswer = ["banana", "apple", "orange", "blueberry", "hamburger"];
-const contestantAnswers = ["banana", "pineapple", "orange", "blueberry", "hotdog"];
+const questions: string[] = ["question 1", "question 2", "question 3", "question 4", "question 5"];
+const correctAnswer: Array<string>  = ["banana", "apple", "orange", "blueberry", "hamburger"];
+const contestantAnswers: string[] = ["banana", "pineapple", "orange", "blueberry", "hotdog"];
 
 let score: number = 0;
 const passingScore: number = 3;

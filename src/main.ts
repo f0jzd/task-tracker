@@ -133,11 +133,6 @@
 //     }
     
 // }
-
-console.log("==================")
-console.log("Task Tracker")
-console.log("==================")
-
 const tasks = [
     "Lära oss Ts",
     "Träna",
@@ -150,7 +145,69 @@ const tasks = [
 
 
 // for (let i = 0; i < tasks.length; i++) {
-//     console.log(`${i+1}: ${tasks[i]}`)    
+    //     console.log(`${i+1}: ${tasks[i]}`)    
+    // }
+    
+    
+    
+    
+function showHeader(): void{
+    console.log("==================")
+    console.log("Task Tracker")
+    console.log("==================")
+}
+
+function showTasks(): void{
+    tasks.forEach(task => {
+        console.log(task)
+    })
+}
+
+function showStatistics(): void{
+    console.log(`Antal uppgifter: ${tasks.length}`)
+}
+
+function addTask(taskName: string): void {
+    tasks.unshift(taskName);
+}
+
+
+showHeader();
+
+showTasks();
+
+showStatistics();
+
+addTask("Gå ut med hoonden")
+addTask("ta hem hoonden")
+
+showTasks();
+
+showStatistics();
+
+    
+    /*----FUNCTION TESTING----*/
+    
+    // function addTwoNumbers(a: number, b: number): number{
+        //     return a+b;
+        // }
+        
+        // const subtractTwoNumbers = (a: number, b:number):number => {
+            //     return a - b;
+            // };
+            
+            // console.log(addTwoNumbers(3,7))
+
+// console.log(subtractTwoNumbers(9,5))
+
+// function addAllNumbers(items: number[]){
+//     const total = items.reduce((a,c) => a + c,0)
+//     console.log(total);
 // }
 
-// console.log(`Antal uppgifter: ${tasks.length}`)
+// function combineNumbers(items: number[]){
+//     const total = items.reduce((a,c) => a + c,0)
+//     return "total";
+// }
+
+// const result = combineNumbers([1,5,7,212,5,23,1]);

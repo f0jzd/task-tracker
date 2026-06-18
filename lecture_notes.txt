@@ -6,6 +6,10 @@ npx tsc --init // execute typescript initialize / lägg till typescript till pro
 npx tsc // kompliera typescript filen
 npm run watch //kör watch scriptet i package.json filen
 
+tsc betyder typescript compile
+npx = node package execute
+npm = node package manager
+
 ---------------------------------------------------
 
 Variabler
@@ -33,3 +37,14 @@ Array och If-satser
 .push = sätter till ett element i slutet av arrayen
 .pop = tar bort elementet på slutet av arrayen, tar bort och är inte en referens till slutet
 .shift och .unshift gör samma fast i börjanm av arrayen, unshift lägger till, shift tar bort. 
+
+for loop för index, när behöver hålla koll på varven
+for of när man ska gå igenom en array, för varje task i array t.ex. visa alla uppgifter
+foreach när man vill göra något med varje element, ska visa alla, ska köra samma kodsnutt på varje
+while är bra när man inte vet hur många gånger loopen ska köra. 
+do while samma som while, men göra en sak minst en gång. 
+
+--------------------------------------------------------------------
+
+Funktioner
+
