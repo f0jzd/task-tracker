@@ -133,14 +133,14 @@
 //     }
     
 // }
-const tasks = [
-    "Lära oss Ts",
-    "Träna",
-    "Handla",
-    "Tvätta",
-    "Plugga",
-    "borshta tender"
-]
+// const tasks = [
+//     "Lära oss Ts",
+//     "Träna",
+//     "Handla",
+//     "Tvätta",
+//     "Plugga",
+//     "borshta tender"
+// ]
 
 
 
@@ -151,39 +151,39 @@ const tasks = [
     
     
     
-function showHeader(): void{
-    console.log("==================")
-    console.log("Task Tracker")
-    console.log("==================")
-}
+// function showHeader(): void{
+//     console.log("==================")
+//     console.log("Task Tracker")
+//     console.log("==================")
+// }
 
-function showTasks(): void{
-    tasks.forEach(task => {
-        console.log(task)
-    })
-}
+// function showTasks(): void{
+//     tasks.forEach(task => {
+//         console.log(task)
+//     })
+// }
 
-function showStatistics(): void{
-    console.log(`Antal uppgifter: ${tasks.length}`)
-}
+// function showStatistics(): void{
+//     console.log(`Antal uppgifter: ${tasks.length}`)
+// }
 
-function addTask(taskName: string): void {
-    tasks.unshift(taskName);
-}
+// function addTask(taskName: string): void {
+//     tasks.unshift(taskName);
+// }
 
 
-showHeader();
+// showHeader();
 
-showTasks();
+// showTasks();
 
-showStatistics();
+// showStatistics();
 
-addTask("Gå ut med hoonden")
-addTask("ta hem hoonden")
+// addTask("Gå ut med hoonden")
+// addTask("ta hem hoonden")
 
-showTasks();
+// showTasks();
 
-showStatistics();
+// showStatistics();
 
     
     /*----FUNCTION TESTING----*/
@@ -211,3 +211,125 @@ showStatistics();
 // }
 
 // const result = combineNumbers([1,5,7,212,5,23,1]);
+
+////////////////////////////////////////////////////////////////////////
+
+type Task = {
+    name: string,
+    completed: boolean,
+    priority:number
+    description?:string
+}
+
+const tasks:Task[] = [
+    {
+        name: "Diska",
+        completed: false,
+        priority:2
+    },
+    {
+        name: "träna",
+        completed: false,
+        priority:3,
+        description: "Springa 120km"
+    },
+    {
+        name: "handla",
+        completed: true,
+        priority:4,
+        description: "Kött."
+    },
+]
+
+
+
+function showHeader(): void{
+    console.log("==================")
+    console.log("Task Tracker")
+    console.log("==================")
+}
+
+function addTask(task: Task){
+    tasks.push(task);
+}
+
+// function showTask(task: Task | undefined){
+//     console.log(task?.name);
+// }
+
+function showTasks(){
+    // const taskNames = tasks.map(task => task.name);
+    // console.log(taskNames);
+
+    tasks.forEach(task => {
+        console.log(task.name, task.completed)
+    })
+}
+
+function showTask(task: Task | undefined){
+    console.log(task?.name)
+}
+
+function showPendingTask(){
+    for (const task of tasks) {
+        if(!task.completed){
+            console.log(task.name);
+        }
+    }
+}
+function showCompletedTask(){
+    for (const task of tasks) {
+        if(task.completed){
+            console.log(task.name);
+        }
+    }
+}
+
+function completedTask(taskName:string){
+    tasks.forEach(task => {
+        if(task.name === taskName)
+        {
+            task.completed = true;
+        }
+    });
+}
+
+function showStatistics(){
+    let completed = 0;
+    let pending = 0;
+
+    tasks.forEach(task => {
+        if(task.completed){
+            completed++;
+        }
+        else{
+            pending++;
+        }
+    });
+
+    console.log(`Completed: ${completed}, Pending: ${pending}`)
+}
+
+
+showHeader();
+
+addTask({
+    name: "walk ddoeg",
+    priority: 500,
+    completed:false
+})
+
+showTasks();
+showTask(tasks[2]);
+console.log("--Pending--")
+showPendingTask();
+console.log("--Completed--")
+showCompletedTask();
+
+completedTask("Diska");
+
+console.log("--Completed--")
+showCompletedTask();
+
+showStatistics();
+
