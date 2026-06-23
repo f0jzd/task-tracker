@@ -7,7 +7,7 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "es2022", //es2022 för chrome debugging, commonjs för VSCode debugger
+    "module": "commonjs", //es2022 för chrome debugging, commonjs för VSCode debugger
     "target": "es2022",
     "types": [],
     // For nodejs:
@@ -40,5 +40,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
+
+    
   }
 }

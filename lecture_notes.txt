@@ -46,5 +46,26 @@ do while samma som while, men göra en sak minst en gång.
 
 --------------------------------------------------------------------
 
-Funktioner
+Type/ Interface
+
+type = inte data, bara beskrivning av data
+ts använder beskrivningen för att hitta fel.
+
+type Status = "Pending" | "Completed" => kan bara vara dem två strängarna
+
+union types = ett av flera bestämda val
+
+Interface = kontrakt, beskriver exakt vilka properties ska finnas i objektet, något man måste följa
+type = allt möjligt hit och dit
+Interface = objekt, kontrakt för objekt, hur de ska vara, mer styrt och bestämt
+
+type vs interface välj det som passar situationen, förstå båda och följ arbetsplatsen.
+
+funktion i objekt = metod
+
+typning gör saker mer klart och tydligt. typ som kommentarer i kod
+
+unions försvinner när typescript komplieras, enums do not. 
+union enklare, enums värden med namn
+
 

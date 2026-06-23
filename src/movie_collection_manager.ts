@@ -5,8 +5,11 @@ type Movie = {
     releaseYear: number,
     seen:boolean,
     rating:number,
-    genre:string
-}
+    genre:string,
+
+    titleAndReleaseYear: ()  => void;
+
+};
 
 const movies: Movie [] = [
     {
@@ -14,49 +17,70 @@ const movies: Movie [] = [
        releaseYear: 1999,
        seen: false,
        rating: 5, 
-       genre:"Sci-Fi"
+       genre:"Sci-Fi",
+       titleAndReleaseYear() {
+           console.log(`${this.title} (${this.releaseYear})`)
+       },
     },
     {
        title: "Inception",
        releaseYear: 2010,
        seen: true,
        rating: 7,
-       genre:"Sci-Fi"
+       genre:"Sci-Fi",
+       titleAndReleaseYear() {
+           console.log(`${this.title} (${this.releaseYear})`)
+       },
+       
     },
     {
        title: "Dune",
        releaseYear: 2021,
        seen: false,
        rating: 8,
-       genre:"Sci-Fi"
+       genre:"Sci-Fi",
+       titleAndReleaseYear() {
+           console.log(`${this.title} (${this.releaseYear})`)
+       },
     },
     {
        title: "Pulp Fiction",
        releaseYear: 1994,
        seen: true,
        rating: 8.8,
-       genre:"Thriller"
+       genre:"Thriller",
+       titleAndReleaseYear() {
+           console.log(`${this.title} (${this.releaseYear})`)
+       },
     },
     {
        title: "Interstellar",
        releaseYear: 2014,
        seen: false,
        rating: 8.7,
-       genre:"Sci-Fi"
+       genre:"Sci-Fi",
+       titleAndReleaseYear() {
+           console.log(`${this.title} (${this.releaseYear})`)
+       },
     },
     {
        title: "12 Angry men",
        releaseYear: 1957,
        seen: false,
        rating: 2,
-       genre:"Thriller"
+       genre:"Thriller",
+       titleAndReleaseYear() {
+           console.log(`${this.title} (${this.releaseYear})`)
+       },
     }
+
+    
 ]
 
 
 function showAllMovies(): void{
     movies.forEach(movie => {
-        console.log(`${movie.title} (${movie.releaseYear})`);
+        movie.titleAndReleaseYear?.();
     });
 }
 
@@ -97,8 +121,10 @@ function movieStatistics(): void{
 
 function markAsWatched(movieTitle: String): void{
     movies.forEach(movie => {
-        if(movieTitle === movie.title)
+        if(movieTitle === movie.title){
             movie.seen = true;
+        }
+        
     });
 }
 
@@ -152,9 +178,9 @@ function watchProgress(){
 
 function showMoviesOfGenre(genre:string){
 
-    movies.forEach(movie => {
-        if(movie.genre === genre)
-            console.log(movie)
+    movies.forEach((movie) => {
+      if (movie.genre === genre)
+        console.log(`${movie.title} is a ${movie.genre}`);
     });
 
 }
@@ -185,3 +211,11 @@ console.log("────────────────────");
 showMoviesOfGenre("Sci-Fi");
 console.log("────────────────────");
 showMoviesOfGenre("Thriller");
+
+document.querySelector("button")?.addEventListener("click", ()=> {
+    greet();
+});
+
+function greet() {
+    console.log("greet");
+}
