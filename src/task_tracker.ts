@@ -21,114 +21,7 @@ interface Task {
     markAsComplete(): void;
 }
 
-// Class Implementation to fix not having a method
-// class TaskItem implements Task {
-//     name:string;
-//     status: Status;
-//     priority: Priority;
-//     description?: string;
-//     notes?: string;
-
-//     constructor(name:string, status:Status,priority:Priority, description?:string, notes?:string) {
-//         this.name = name;
-//         this.status = status;
-//         this.priority = priority;
-//         if (description) this.description = description;
-//         if (notes) this.notes = notes;
-//     }
-
-//     markAsComplete(): void{
-//         this.status = Status.Completed;
-//     }
-// }
-
-
 const TaskList: Task[] = [];
-
-//THIS IS BAD PRACTICE ONLY FOR ASSIGNMENT :( -> CREATE A FACTORY AND CREATE THEM THERE INSTEAD
-// const TaskList: Task[] = [
-//     {
-//         name:"Fix login authentication bug",
-//         status: Status.Completed,
-//         priority: Priority.Low,
-
-//         markAsComplete() {
-//             this.status = Status.Completed;
-//             console.log(`${this.name} marked as complete.`)
-//         },
-//     },
-//     {
-//         name:"Design landing page layout",
-//         status: Status.Completed,
-//         priority: Priority.Low,
-
-//         markAsComplete() {
-//             this.status = Status.Completed;
-//             console.log(`${this.name} marked as complete.`)
-//         },
-//     },
-//     {
-//         name:"Refactor API error handling",
-//         status: Status.Pending,
-//         priority: Priority.Low,
-
-//         markAsComplete() {
-//             this.status = Status.Completed;
-//             console.log(`${this.name} marked as complete.`)
-//         },
-//     },
-//     {
-//         name:"Write unit tests for user service",
-//         status: Status.Started,
-//         priority: Priority.Medium,
-
-//         markAsComplete() {
-//             this.status = Status.Completed;
-//             console.log(`${this.name} marked as complete.`)
-//         },
-//     },
-//     {
-//         name:"Set up CI/CD pipeline",
-//         status: Status.Pending,
-//         priority: Priority.Low,
-
-//         markAsComplete() {
-//             this.status = Status.Completed;
-//             console.log(`${this.name} marked as complete.`)
-//         },
-//     },
-//     {
-//         name:"Improve mobile responsiveness",
-//         status: Status.Started,
-//         priority: Priority.High,
-
-//         markAsComplete() {
-//             this.status = Status.Completed;
-//             console.log(`${this.name} marked as complete.`)
-//         },
-//     },
-//     {
-//         name:"Add input validation to forms",
-//         status: Status.Started,
-//         priority: Priority.High,
-
-//         markAsComplete() {
-//             this.status = Status.Completed;
-//             console.log(`${this.name} marked as complete.`)
-//         },
-//     },
-//     {
-//         name:"Update user profile page UI",
-//         status: Status.Started,
-//         priority: Priority.High,
-
-//         markAsComplete() {
-//             this.status = Status.Completed;
-//             console.log(`${this.name} marked as complete.`)
-//         },
-//     },
-
-// ];
 
 function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, taskNotes?:string): void{
     
@@ -201,7 +94,6 @@ function completeTask(taskName:string): void{
     if (!task) return;
 
     task.markAsComplete();
-    //console.log(`${task.name} marked as complete.`)
 }
 
 function updateTask(taskName:string, taskUpdate: Status | Priority): void{
@@ -217,29 +109,7 @@ function updateTask(taskName:string, taskUpdate: Status | Priority): void{
         task.priority = taskUpdate;
     }
 
-
-    // // Bad practice?
-    // if (Object.values(Status).includes(taskUpdate as Status)) {
-    //     task.status = taskUpdate as Status;
-    //     console.log(`Updated status to: ${taskUpdate}`);
-
 }
-
-//Generics???
-// function filterTasks<Type extends "status" | "priority">( key:Type, value:Type extends "status" ? Status : Priority): void{
-    
-    
-//     console.log(`\n ***** ${status} Tasks *****`)
-
-//     TaskList.forEach(task => {
-//         if(task[key] === value){
-//             displayTask(task);
-//         }
-//     });
-// }
-
-
-
 
 addTask("Optimize database query performance",Priority.Low,);
 addTask("Fix login authentication bug",Priority.Low,);
