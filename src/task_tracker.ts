@@ -3,10 +3,17 @@ enum Status{
     Started = "Started",
     Completed = "Completed"
 }
+
 enum Priority{
     Low = "Low",
     Medium = "Medium",
     High = "High"
+}
+
+const priorityWeight: Record<Priority, number> = {
+    [Priority.Low]: 1,
+    [Priority.Medium]: 2,
+    [Priority.High]: 3
 }
 
 
@@ -21,7 +28,7 @@ interface Task {
     markAsComplete(): void;
 }
 
-const TaskList: Task[] = [];
+const taskList: Task[] = [];
 
 function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, taskNotes?:string): void{
     
@@ -40,7 +47,7 @@ function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, tas
     if (taskNotes) {task.notes = taskNotes}
     
 
-    TaskList.push(task);
+    taskList.push(task);
 
     // //Option 2
     // TaskList.push({
@@ -64,8 +71,8 @@ function displayTask(task: Task): void{
             console.log("-----------------------------")
 }
 
-function showTasks(): void{
-    TaskList.forEach(task => {
+function showTasks(tasks: Task[] = taskList): void{
+    tasks.forEach(task => {
         displayTask(task)
     });
 }
@@ -76,7 +83,7 @@ function filterTasks(filter: Status | Priority): void{
     console.log(`\n ***** ${filter} Tasks *****`)
     
     
-    TaskList.forEach(task => {
+    taskList.forEach(task => {
         if(task.priority === filter || task.status === filter){
             displayTask(task);
         }
@@ -89,16 +96,24 @@ function isStatus(value: any): value is Status{
 }
 
 function completeTask(taskName:string): void{
-    const task=TaskList.find(t => t.name === taskName);
+    const task=taskList.find(t => t.name === taskName);
 
     if (!task) return;
 
     task.markAsComplete();
 }
 
+function startTask(taskName:string): void{
+    const task=taskList.find(t => t.name === taskName);
+
+    if (!task) return;
+
+    task.status = Status.Started;
+}
+
 function updateTask(taskName:string, taskUpdate: Status | Priority): void{
     
-    const task=TaskList.find(t => t.name === taskName);
+    const task=taskList.find(t => t.name === taskName);
 
     if (!task) return;
 
@@ -111,18 +126,53 @@ function updateTask(taskName:string, taskUpdate: Status | Priority): void{
 
 }
 
+function showStatistics(){
+    console.log(`Total Tasks: ${taskList.length}`)
+
+    let completedTasks: number = 0;
+    let pendingTasks: number = 0;
+    let startedTasks: number = 0;
+
+    taskList.forEach(task => {
+        if(task.status === Status.Completed){
+            completedTasks++;
+        }
+        if(task.status === Status.Pending){
+            pendingTasks++;
+        }
+        if(task.status === Status.Started){
+            startedTasks++;
+        }
+    });
+
+    console.log(`There are ${pendingTasks} that are pending`)
+    console.log(`There are ${startedTasks} that are started`)
+    console.log(`There are ${completedTasks} that are completed`)
+
+}
+
+function sortByPriority(){
+    
+    const sortedTaskList = [...taskList].sort((a,b) => {
+       return priorityWeight[b.priority] - priorityWeight[a.priority]
+    } );
+
+    showTasks(sortedTaskList);
+}
+
 addTask("Optimize database query performance",Priority.Low,);
-addTask("Fix login authentication bug",Priority.Low,);
-addTask("Design landing page layout",Priority.Low,);
+addTask("Fix login authentication bug",Priority.High,);
+addTask("Design landing page layout",Priority.Medium,);
 addTask("Refactor API error handling",Priority.Low,);
-addTask("Write unit tests for user service",Priority.Low,);
+addTask("Write unit tests for user service",Priority.High,);
 addTask("Set up CI/CD pipeline",Priority.Low,);
-addTask("Improve mobile responsiveness",Priority.Low,);
-addTask("Add input validation to forms",Priority.Low,);
+addTask("Improve mobile responsiveness",Priority.Medium,);
+addTask("Add input validation to forms",Priority.Medium,);
 addTask("Update user profile page UI",Priority.Low,);
 
 addTask("Implement dark mode toggle",Priority.High, "Ben cant see, needs dark mode toggle", "Johns idea");
 addTask("test",Priority.Low);
+
 //showTasks();
 // updateTask("test",Priority.Low);
 // filterTasks(Status.Pending);
@@ -130,12 +180,15 @@ addTask("test",Priority.Low);
 // filterTasks(Status.Started);
 // completeTask("test");
 // filterTasks(Status.Started);
-
-
+// filterTasks(Status.Started);
+// completeTask("Implement dark mode toggle");
+// filterTasks(Status.Completed);
 
 filterTasks(Status.Started);
-completeTask("Implement dark mode toggle");
-filterTasks(Status.Completed);
+
+sortByPriority();
+
+
 
 
 
