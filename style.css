@@ -1,9 +1,39 @@
 .task{
-    border: 5px solid red;
+    border: 2px solid rgb(121, 121, 121);
     padding: 1rem;
     margin-block-end: 1rem;
 }
 
-.high-priority{
-    border-left: 4px solid green;
+.high-prio{
+    border-left: 6px solid rgb(255, 0, 98);
+}
+
+.medium-prio{
+    border-left: 6px solid rgb(0, 10, 148);
+}
+
+.low-prio{
+    border-left: 6px solid rgb(0, 145, 65);
+}
+
+
+/* ///////////////////////////////////////////////////// */
+
+
+table {
+  border-collapse: collapse;
+  margin-top: 2em;
+}
+thead {
+  font-weight: bold;
+}
+td {
+  padding: 2px 10px;
+}
+
+.odd {
+  background-color: #efdfef;
+}
+.even {
+  background-color: white;
 }
