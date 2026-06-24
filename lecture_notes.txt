@@ -68,4 +68,7 @@ typning gör saker mer klart och tydligt. typ som kommentarer i kod
 unions försvinner när typescript komplieras, enums do not. 
 union enklare, enums värden med namn
 
+------------------------------------------------------------
+
+Query selector = hitta första som matchar parametern.
 

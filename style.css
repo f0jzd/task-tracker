@@ -1,0 +1,9 @@
+.task{
+    border: 5px solid red;
+    padding: 1rem;
+    margin-block-end: 1rem;
+}
+
+.high-priority{
+    border-left: 4px solid green;
+}
