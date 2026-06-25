@@ -4,115 +4,6 @@ title.textContent ="My Tasks"
 
 const app = document.querySelector("#app");//We add our app.
 
-
-//MDN:s version of showing a table using built in functions.
-// function showTable(taskList: Task[]): void{
-
-//     function addCell(row: HTMLTableRowElement, text: Task[keyof Task]) {
-    
-//     //LAbel 1 -> lAbel 2 etc -1 to move to the right in each cell
-//     const cell = row.insertCell(-1);
-
-//     cell.textContent = text == null ? "" : String(text);
-    
-//     //Don't use createTextNode, is bad.
-//     // if(!text){
-//     //     cell.appendChild(document.createTextNode(""));
-//     // }
-//     // else{
-//     //     cell.appendChild(document.createTextNode(text));
-//     // }
-
-//     }
-
-//     const table = document.createElement("table");
-//     const tHead = table.createTHead();
-
-//     let row = tHead.insertRow(-1);
-
-//     const labelList = ["Priority", "Task", "Status", "Notes", "Description"];
-
-//     labelList.forEach(label => {
-//         addCell(row,label)
-//     });
-
-//     const tbody = document.createElement("tbody");
-//     table.appendChild(tbody);
-
-//     taskList.forEach(task => {
-//         row = tbody.insertRow(-1);
-//         addCell(row, task.priority)
-//         addCell(row, task.name)
-//         addCell(row, task.status)
-//         addCell(row, task.notes)
-//         addCell(row, task.description)
-
-//     });
-
-//     document.body.append(table);
-
-// }
-
-// //Renders a table of the data, not relevant to assignment
-// function renderTable(): void {
-
-//   const table = document.createElement("table");
-//   table.classList.add("user-table");
-
-//   // Create thead
-//   const thead = document.createElement("thead");
-//   const headerRow = document.createElement("tr");
-
-//   const headers = ["ID", "Name", "Email", "Description", "Notes"];
-
-//   headers.forEach((headerText) => {
-//     const th = document.createElement("th");
-//     th.textContent = headerText;
-//     headerRow.append(th);
-//   });
-
-//   thead.append(headerRow);
-//   table.append(thead);
-
-//   // Create tbody
-//   const tbody = document.createElement("tbody");
-
-//   taskList.forEach((user) => {
-//     const row = document.createElement("tr");
-
-//     const idCell = document.createElement("td");
-//     idCell.textContent = String(user.name);
-
-//     const nameCell = document.createElement("td");
-//     nameCell.textContent = user.status;
-
-//     const emailCell = document.createElement("td");
-//     emailCell.textContent = user.priority;
-
-//     const noteCell = document.createElement("td");
-//     noteCell.textContent = user.description ?? null;
-
-//     const descCell = document.createElement("td");
-//     descCell.textContent = user.notes ?? null;
-
-
-//     row.append(idCell,nameCell,emailCell,noteCell,descCell);
-
-//     tbody.append(row);
-//   });
-
-//   table.append(tbody);
-
-//   app?.append(table)
-// }
-
-// function showSortedTable(taskList: Task[]){
-//     const sortedTable = sortByPriority(taskList);
-//     showTable(sortedTable);
-// }
-
-//let uniqueId = 0;
-
 enum Status{
     Pending = "Pending",
     Started = "Started",
@@ -140,9 +31,8 @@ interface Task {
     description?:string;
     notes?:string;
 
-
-    markAsComplete(): void;
-    markAsStarted(): void;
+    // markAsComplete(): void;
+    // markAsStarted(): void;
     changeState(status: Status): void;
 
 }
@@ -168,8 +58,6 @@ priorities.forEach(value => {
 
 });
 
-
-
 addTaskBtn.addEventListener("click", () => {
     const taskName = taskInput.value.trim();
     if(taskName === ""){ 
@@ -185,45 +73,28 @@ addTaskBtn.addEventListener("click", () => {
     addTask(taskName,priority)
 })
 
-// const taskInput = document.querySelector("#task-input") as HTMLInputElement;
-// const addButton = document.querySelector("#add-button") as HTMLButtonElement;
-
-// addButton.addEventListener("click", () => {
-//     const taskName = taskInput.value.trim();
-//     if (taskName === "") {
-//         //Add warning functionalty here
-//         return;
-//     }
-
-// })
-
-
-
 let taskList: Task[] = [];
 
 function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, taskNotes?:string): void{
     
-
-    
-
-
     //Option 1
     const task: Task = {
         id: crypto.randomUUID(),
         name: taskName,
         status: Status.Pending,
         priority: taskPriority,
-        markAsComplete: function (): void {
-            this.status = Status.Completed;
-            console.log(`${this.name} marked as complete.`)
 
-            renderTasks();
-        },
-        markAsStarted: function (): void{
-            this.status = Status.Started;
-            console.log(`${this.name} marked as started.`)
-            renderTasks();
-        },
+        // markAsComplete: function (): void {
+        //     this.status = Status.Completed;
+        //     console.log(`${this.name} marked as complete.`)
+        //     renderTasks();
+        // },
+        // markAsStarted: function (): void{
+        //     this.status = Status.Started;
+        //     console.log(`${this.name} marked as started.`)
+        //     renderTasks();
+        // },
+
         changeState(newStatus: Status): void {
             this.status = newStatus;
             console.log(`${this.name} marked as ${this.status}`)
@@ -233,9 +104,8 @@ function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, tas
 
     if (taskDesc) {task.description = taskDesc}
     if (taskNotes) {task.notes = taskNotes}
-    
-    //taskListMap.
-    taskList.push(task);
+
+    taskList.unshift(task);
 
 
     // //Option 2
@@ -252,38 +122,19 @@ function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, tas
 
 function deleteTask(taskId: string): void{
     taskList = taskList.filter((task) => task.id !== taskId);
+    console.log(taskList.length);
     renderTasks();
 }
 
-
-function displayTask(task: Task): void{
-    console.log([
-            `Task: ${task.name}`,
-            `Status: ${task.status}`,
-            `Priority: ${task.priority}`,
-            task.description && `Description: ${task.description}`,
-            task.notes && `Notes: ${task.notes}`].
-            filter(Boolean).join("\n"))
-            console.log("-----------------------------")
-}
-
-function showTasks(tasks: Task[] = taskList): void{
-    tasks.forEach(task => {
-        displayTask(task)
-    });
-}
-
-//Must Pass Enum Values
-function filterTasks(filter: Status | Priority): void{
+function filterTasks(filter: Status | Priority): Task[]{
     
-    console.log(`\n ***** ${filter} Tasks *****`)
-    
-    
+    const filteredList: Task[] = [];
     taskList.forEach(task => {
         if(task.priority === filter || task.status === filter){
-            displayTask(task);
+            filteredList.push(task);
         }
     });
+    return filteredList;
 }
 
 //Typeguard, is good apparently?
@@ -291,93 +142,91 @@ function isStatus(value: any): value is Status{
     return Object.values(Status).includes(value);
 }
 
-function completeTask(taskName:string): void{
-    const task=taskList.find(t => t.name === taskName);
-    if (!task) return;
-    task.markAsComplete();
-}
-
-function startTask(taskName:string): void{
-    const task=taskList.find(t => t.name === taskName);
-
-    if (!task) return;
-
-    task.status = Status.Started;
-}
-
-function updateTask(taskName:string, taskUpdate: Status | Priority): void{
-    
-    const task=taskList.find(t => t.name === taskName);
-
-    if (!task) return;
-
-    if(isStatus(taskUpdate)){
-        task.status = taskUpdate;
-    }
-    else{
-        task.priority = taskUpdate;
-    }
-
-}
-
-function showStatistics(){
-    
-
-    let completedTasks: number = 0;
-    let pendingTasks: number = 0;
-    let startedTasks: number = 0;
-
-    taskList.forEach(task => {
-        if(task.status === Status.Completed){
-            completedTasks++;
-        }
-        if(task.status === Status.Pending){
-            pendingTasks++;
-        }
-        if(task.status === Status.Started){
-            startedTasks++;
-        }
-    });
-
-}
-
 function sortByPriority(taskList:Task[]): Task[]{
-    
     const sortedTaskList = [...taskList].sort((a,b) => {
        return priorityWeight[b.priority] - priorityWeight[a.priority]
     } );
-
-    //showTasks(sortedTaskList);
-
     return sortedTaskList;
 }
 
+function createPrioButton(label: string){
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    return btn;
+}
+
+function prioPicker(priority: Priority): void{
+    listCheck = priority;
+    renderTasks();
+}
 
 /************************ RENDER ************************** */
+
+let placeholderList: Task[] = taskList;
+let listCheck: Priority | undefined;
 
 function renderTasks(): void {
     if (app) {
         app.innerHTML = "";
     }
 
-    
     taskInput.value = "";
 
     const totalTasks = document.createElement("h2")
     totalTasks.textContent = `Total Tasks: ${taskList.length}`
-
-    //const taskPrio = document.getElementById("#priority-input") as HTMLSelectElement; ^
-
     priorityInput.value = defaultValue;
 
 
-    app?.append(totalTasks)
+    const lowPriorityList = createPrioButton("Show Low Priority");
+    const midPriorityList = createPrioButton("Show Medium Priority");
+    const highPriorityList = createPrioButton("Show High Priority");
+    const showAllTasks = createPrioButton("Show All Tasks")
 
-    taskList.forEach(task => {
-        const card = document.createElement("div"); //Create a card wrapper
-        card.classList.add("task") //add class to the card.
+    lowPriorityList.addEventListener("click", () => {
+        prioPicker(Priority.Low)
+    });
+    midPriorityList.addEventListener("click", () => {
+        prioPicker(Priority.Medium)
+    });
+    highPriorityList.addEventListener("click", () => {
+        prioPicker(Priority.High)
+    });
+    showAllTasks.addEventListener("click", () => {
+        listCheck = undefined;
+        renderTasks();
+    })
 
-        //The the task is high priority add a separate class for styling purpose
+    switch (listCheck) {
+        case Priority.Low:
+            placeholderList = filterTasks(Priority.Low)
+            break;
+
+        case Priority.Medium:
+            placeholderList = filterTasks(Priority.Medium)
+            break;
+
+        case Priority.High:
+            placeholderList = filterTasks(Priority.High)
+            break;
+    
+        default:
+            placeholderList = taskList
+            break;
+    }
+
+    
+    app?.append(
+        totalTasks,
+        lowPriorityList,
+        midPriorityList,
+        highPriorityList,
+        showAllTasks,
+    )
+
+    placeholderList.forEach(task => {
+        const card = document.createElement("div"); 
+        card.classList.add("task") 
+
         if (task.priority === Priority.High) {
             card.classList.add("high-prio") 
         }
@@ -386,9 +235,7 @@ function renderTasks(): void {
         }
         if (task.priority === Priority.Low) {
             card.classList.add("low-prio") 
-            
         }
-
 
         const taskTitle = document.createElement("h3");
         taskTitle.textContent = task.name;
@@ -447,6 +294,7 @@ function renderTasks(): void {
 
         deleteButton.addEventListener("click", () => {
             deleteTask(task.id);
+            renderTasks();
         })
 
 
@@ -462,6 +310,9 @@ function renderTasks(): void {
         app?.append(card);
 
     });
+
+  
+    
 }
 
 
@@ -493,8 +344,11 @@ addTask("test",Priority.Low);
 
 
 
+// renderTasks(filterTasks(Priority.High));
+// renderTasks(filterTasks(Priority.Medium));
+
 renderTasks();
-taskList = sortByPriority(taskList);
+//taskList = sortByPriority(taskList);
 
 //renderTable();
 
