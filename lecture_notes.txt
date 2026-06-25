@@ -72,3 +72,7 @@ union enklare, enums värden med namn
 
 Query selector = hitta första som matchar parametern.
 
+
+----------------------------------
+
+Make array into interface , mehtod ot add/ append task to the list create task thing

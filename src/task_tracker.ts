@@ -5,171 +5,113 @@ title.textContent ="My Tasks"
 const app = document.querySelector("#app");//We add our app.
 
 
-function renderTasks(): void {
-    if (app) {
-        app.innerHTML = "";
-    }
-
-    const totalTasks = document.createElement("h2")
-    totalTasks.textContent = `Total Tasks: ${taskList.length}`
-
-    app?.append(totalTasks)
-
-    taskList.forEach(task => {
-        const card = document.createElement("div"); //Create a card wrapper
-        card.classList.add("task") //add class to the card.
-
-        //The the task is high priority add a separate class for styling purpose
-        if (task.priority === Priority.High) {
-            card.classList.add("high-prio") 
-        }
-        if (task.priority === Priority.Medium) {
-            card.classList.add("medium-prio") 
-        }
-        if (task.priority === Priority.Low) {
-            card.classList.add("low-prio") 
-        }
-
-
-        const taskTitle = document.createElement("h3");
-        taskTitle.textContent = task.name;
-
-        const taskState = document.createElement("p");
-        taskState.textContent = `Status: ${task.status} | Priority: ${task.priority}`;
-
-        // const taskStatus = document.createElement("p")
-        // taskStatus.textContent = task.status;
-
-        // const taskPriority = document.createElement("p");
-        // taskPriority.textContent = task.priority;
-
-        const taskNotes = document.createElement("p");
-        taskNotes.textContent = task.notes ?? null;
-
-        const taskDesc = document.createElement("p");
-        taskDesc.textContent = task.description ?? null;
-
-
-        card.append(
-            taskTitle,
-            taskState,
-            taskNotes,
-            taskDesc,
-
-        );
-
-        app?.append(card);
-
-    });
-}
-
-
 //MDN:s version of showing a table using built in functions.
-function showTable(taskList: Task[]): void{
+// function showTable(taskList: Task[]): void{
 
-    function addCell(row: HTMLTableRowElement, text: Task[keyof Task]) {
+//     function addCell(row: HTMLTableRowElement, text: Task[keyof Task]) {
     
-    //LAbel 1 -> lAbel 2 etc -1 to move to the right in each cell
-    const cell = row.insertCell(-1);
+//     //LAbel 1 -> lAbel 2 etc -1 to move to the right in each cell
+//     const cell = row.insertCell(-1);
 
-    cell.textContent = text == null ? "" : String(text);
+//     cell.textContent = text == null ? "" : String(text);
     
-    //Don't use createTextNode, is bad.
-    // if(!text){
-    //     cell.appendChild(document.createTextNode(""));
-    // }
-    // else{
-    //     cell.appendChild(document.createTextNode(text));
-    // }
+//     //Don't use createTextNode, is bad.
+//     // if(!text){
+//     //     cell.appendChild(document.createTextNode(""));
+//     // }
+//     // else{
+//     //     cell.appendChild(document.createTextNode(text));
+//     // }
 
-    }
+//     }
 
-    const table = document.createElement("table");
-    const tHead = table.createTHead();
+//     const table = document.createElement("table");
+//     const tHead = table.createTHead();
 
-    let row = tHead.insertRow(-1);
+//     let row = tHead.insertRow(-1);
 
-    const labelList = ["Priority", "Task", "Status", "Notes", "Description"];
+//     const labelList = ["Priority", "Task", "Status", "Notes", "Description"];
 
-    labelList.forEach(label => {
-        addCell(row,label)
-    });
+//     labelList.forEach(label => {
+//         addCell(row,label)
+//     });
 
-    const tbody = document.createElement("tbody");
-    table.appendChild(tbody);
+//     const tbody = document.createElement("tbody");
+//     table.appendChild(tbody);
 
-    taskList.forEach(task => {
-        row = tbody.insertRow(-1);
-        addCell(row, task.priority)
-        addCell(row, task.name)
-        addCell(row, task.status)
-        addCell(row, task.notes)
-        addCell(row, task.description)
+//     taskList.forEach(task => {
+//         row = tbody.insertRow(-1);
+//         addCell(row, task.priority)
+//         addCell(row, task.name)
+//         addCell(row, task.status)
+//         addCell(row, task.notes)
+//         addCell(row, task.description)
 
-    });
+//     });
 
-    document.body.append(table);
+//     document.body.append(table);
 
-}
+// }
 
-//Renders a table of the data, not relevant to assignment
-function renderTable(): void {
+// //Renders a table of the data, not relevant to assignment
+// function renderTable(): void {
 
-  const table = document.createElement("table");
-  table.classList.add("user-table");
+//   const table = document.createElement("table");
+//   table.classList.add("user-table");
 
-  // Create thead
-  const thead = document.createElement("thead");
-  const headerRow = document.createElement("tr");
+//   // Create thead
+//   const thead = document.createElement("thead");
+//   const headerRow = document.createElement("tr");
 
-  const headers = ["ID", "Name", "Email", "Description", "Notes"];
+//   const headers = ["ID", "Name", "Email", "Description", "Notes"];
 
-  headers.forEach((headerText) => {
-    const th = document.createElement("th");
-    th.textContent = headerText;
-    headerRow.append(th);
-  });
+//   headers.forEach((headerText) => {
+//     const th = document.createElement("th");
+//     th.textContent = headerText;
+//     headerRow.append(th);
+//   });
 
-  thead.append(headerRow);
-  table.append(thead);
+//   thead.append(headerRow);
+//   table.append(thead);
 
-  // Create tbody
-  const tbody = document.createElement("tbody");
+//   // Create tbody
+//   const tbody = document.createElement("tbody");
 
-  taskList.forEach((user) => {
-    const row = document.createElement("tr");
+//   taskList.forEach((user) => {
+//     const row = document.createElement("tr");
 
-    const idCell = document.createElement("td");
-    idCell.textContent = String(user.name);
+//     const idCell = document.createElement("td");
+//     idCell.textContent = String(user.name);
 
-    const nameCell = document.createElement("td");
-    nameCell.textContent = user.status;
+//     const nameCell = document.createElement("td");
+//     nameCell.textContent = user.status;
 
-    const emailCell = document.createElement("td");
-    emailCell.textContent = user.priority;
+//     const emailCell = document.createElement("td");
+//     emailCell.textContent = user.priority;
 
-    const noteCell = document.createElement("td");
-    noteCell.textContent = user.description ?? null;
+//     const noteCell = document.createElement("td");
+//     noteCell.textContent = user.description ?? null;
 
-    const descCell = document.createElement("td");
-    descCell.textContent = user.notes ?? null;
+//     const descCell = document.createElement("td");
+//     descCell.textContent = user.notes ?? null;
 
 
-    row.append(idCell,nameCell,emailCell,noteCell,descCell);
+//     row.append(idCell,nameCell,emailCell,noteCell,descCell);
 
-    tbody.append(row);
-  });
+//     tbody.append(row);
+//   });
 
-  table.append(tbody);
+//   table.append(tbody);
 
-  app?.append(table)
-}
+//   app?.append(table)
+// }
 
-function showSortedTable(taskList: Task[]){
-    const sortedTable = sortByPriority(taskList);
-    showTable(sortedTable);
-}
+// function showSortedTable(taskList: Task[]){
+//     const sortedTable = sortByPriority(taskList);
+//     showTable(sortedTable);
+// }
 
+//let uniqueId = 0;
 
 enum Status{
     Pending = "Pending",
@@ -191,6 +133,7 @@ const priorityWeight: Record<Priority, number> = {
 
 
 interface Task {
+    id:string;
     name: string;
     status: Status;
     priority: Priority;
@@ -199,28 +142,101 @@ interface Task {
 
 
     markAsComplete(): void;
+    markAsStarted(): void;
+    changeState(status: Status): void;
+
 }
 
-const taskList: Task[] = [];
+const taskInput = document.querySelector("#task-input") as HTMLInputElement;
+const addTaskBtn = document.querySelector("#add-task") as HTMLButtonElement;
+const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
+const defaultValue = Priority.Low;
+
+
+//Set Priorites based on the enum above
+const priorities = Object.values(Priority);
+
+priorities.forEach(value => {
+    const option = document.createElement("option");
+
+    option.value = value;
+
+    option.textContent = value;
+    priorityInput.appendChild(option);
+
+    
+
+});
+
+
+
+addTaskBtn.addEventListener("click", () => {
+    const taskName = taskInput.value.trim();
+    if(taskName === ""){ 
+        //Throw warning
+        console.log("Required Input");
+        return;
+    }
+
+    const priority = priorityInput.value as Priority;
+
+    console.log(priority)
+
+    addTask(taskName,priority)
+})
+
+// const taskInput = document.querySelector("#task-input") as HTMLInputElement;
+// const addButton = document.querySelector("#add-button") as HTMLButtonElement;
+
+// addButton.addEventListener("click", () => {
+//     const taskName = taskInput.value.trim();
+//     if (taskName === "") {
+//         //Add warning functionalty here
+//         return;
+//     }
+
+// })
+
+
+
+let taskList: Task[] = [];
 
 function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, taskNotes?:string): void{
     
+
+    
+
+
     //Option 1
     const task: Task = {
+        id: crypto.randomUUID(),
         name: taskName,
         status: Status.Pending,
         priority: taskPriority,
         markAsComplete: function (): void {
             this.status = Status.Completed;
             console.log(`${this.name} marked as complete.`)
-        }
+
+            renderTasks();
+        },
+        markAsStarted: function (): void{
+            this.status = Status.Started;
+            console.log(`${this.name} marked as started.`)
+            renderTasks();
+        },
+        changeState(newStatus: Status): void {
+            this.status = newStatus;
+            console.log(`${this.name} marked as ${this.status}`)
+            
+        },
     };
 
     if (taskDesc) {task.description = taskDesc}
     if (taskNotes) {task.notes = taskNotes}
     
-
+    //taskListMap.
     taskList.push(task);
+
 
     // //Option 2
     // TaskList.push({
@@ -230,7 +246,14 @@ function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, tas
     //     ...(taskDesc?{description: taskDesc} : {}),
     //     ...(taskNotes?{notes: taskNotes} : {})
     // })
+
+    renderTasks();
 };
+
+function deleteTask(taskId: string): void{
+    taskList = taskList.filter((task) => task.id !== taskId);
+    renderTasks();
+}
 
 
 function displayTask(task: Task): void{
@@ -270,9 +293,7 @@ function isStatus(value: any): value is Status{
 
 function completeTask(taskName:string): void{
     const task=taskList.find(t => t.name === taskName);
-
     if (!task) return;
-
     task.markAsComplete();
 }
 
@@ -326,11 +347,122 @@ function sortByPriority(taskList:Task[]): Task[]{
        return priorityWeight[b.priority] - priorityWeight[a.priority]
     } );
 
-    showTasks(sortedTaskList);
+    //showTasks(sortedTaskList);
 
     return sortedTaskList;
 }
 
+
+/************************ RENDER ************************** */
+
+function renderTasks(): void {
+    if (app) {
+        app.innerHTML = "";
+    }
+
+    
+    taskInput.value = "";
+
+    const totalTasks = document.createElement("h2")
+    totalTasks.textContent = `Total Tasks: ${taskList.length}`
+
+    //const taskPrio = document.getElementById("#priority-input") as HTMLSelectElement; ^
+
+    priorityInput.value = defaultValue;
+
+
+    app?.append(totalTasks)
+
+    taskList.forEach(task => {
+        const card = document.createElement("div"); //Create a card wrapper
+        card.classList.add("task") //add class to the card.
+
+        //The the task is high priority add a separate class for styling purpose
+        if (task.priority === Priority.High) {
+            card.classList.add("high-prio") 
+        }
+        if (task.priority === Priority.Medium) {
+            card.classList.add("medium-prio") 
+        }
+        if (task.priority === Priority.Low) {
+            card.classList.add("low-prio") 
+            
+        }
+
+
+        const taskTitle = document.createElement("h3");
+        taskTitle.textContent = task.name;
+
+        const taskState = document.createElement("p");
+        taskState.textContent = `Status: ${task.status} | Priority: ${task.priority}`;
+
+        const taskNotes = document.createElement("p");
+        taskNotes.textContent = task.notes ?? null;
+
+        const taskDesc = document.createElement("p");
+        if(taskDesc.textContent = task.description ?? null){
+            taskDesc.classList.add("task-desc")
+        }
+        
+        const stateButton = document.createElement("button");
+        stateButton.classList.add("btn");
+
+        const taskActive = task.status === Status.Pending || task.status === Status.Started;
+        stateButton.textContent = taskActive ? "Start" : "Undo";
+
+        const existingOverlayBtn = card.querySelector(".overlay-btn");
+        if (existingOverlayBtn) {
+            existingOverlayBtn.remove();
+        }
+
+        stateButton.addEventListener("click", () =>{
+
+            switch (task.status) {
+                case Status.Pending:
+                    task.changeState(Status.Started);
+                    stateButton.textContent = "Completed?";
+                    break;
+
+                case Status.Started:
+                    task.changeState(Status.Completed);
+                    card.classList.add("completed")
+                    stateButton.textContent = "Undo?";
+                    break;
+                    
+                case Status.Completed:
+                    task.changeState(Status.Started);
+                    card.classList.remove("completed")
+                    stateButton.textContent = "Comepleted?"   
+                    break;
+
+            }
+
+            taskState.textContent = `Status: ${task.status} | Priority: ${task.priority}`;
+        });
+
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("btn");
+
+        deleteButton.addEventListener("click", () => {
+            deleteTask(task.id);
+        })
+
+
+        card.append(
+            taskTitle,
+            taskState,
+            taskNotes,
+            taskDesc,
+            stateButton,
+            deleteButton
+        );
+
+        app?.append(card);
+
+    });
+}
 
 
 addTask("Optimize database query performance",Priority.Low,);
@@ -357,16 +489,17 @@ addTask("test",Priority.Low);
 // completeTask("Implement dark mode toggle");
 // filterTasks(Status.Completed);
 
-filterTasks(Status.Started);
-
-sortByPriority(taskList);
+//filterTasks(Status.Started);
 
 
-//renderTasks();
+
+renderTasks();
+taskList = sortByPriority(taskList);
+
 //renderTable();
-showTable(taskList);
 
-showSortedTable(taskList);
+// showTable(taskList);
+// showSortedTable(taskList);
 
 
 

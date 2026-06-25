@@ -3,8 +3,11 @@
     padding: 1rem;
     margin-block-end: 1rem;
 }
-
 .high-prio{
+    border-left: 6px solid rgb(255, 0, 98);
+}
+
+.high-priority{
     border-left: 6px solid rgb(255, 0, 98);
 }
 
@@ -17,6 +20,31 @@
 }
 
 
+.completed{
+  /* border: solid 6px green; */
+  
+}
+
+.undo-button{
+  color: green;
+}
+
+.task.completed{
+  
+  
+  p, h3{
+    position: relative;
+    opacity: 0.6;
+    text-decoration: line-through;
+  }
+}
+
+.task-desc{
+  background: blue;
+  padding: 0.5rem;
+  color: red;
+  width:fit-content;
+}
 /* ///////////////////////////////////////////////////// */
 
 
