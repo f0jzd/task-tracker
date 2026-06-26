@@ -22,6 +22,72 @@ const priorityWeight: Record<Priority, number> = {
     [Priority.High]: 3
 }
 
+interface TaskList{
+
+    items: Task[],
+    
+    addTask(
+        taskName:string, 
+        taskPriority: Priority, 
+        taskDesc?: string, 
+        taskNotes?:string): void;
+
+    filterTasks(filter: Status | Priority): Task[];
+    deleteTask(taskId:string): void;
+}
+
+let test: TaskList = {
+
+    items: [],
+    
+    addTask(
+        taskName:string, 
+        taskPriority: Priority, 
+        taskDesc?: string, 
+        taskNotes?:string): void{
+    
+    const task: Task = {
+        id: crypto.randomUUID(),
+        name: taskName,
+        status: Status.Pending,
+        priority: taskPriority,
+
+        changeState(newStatus: Status): void {
+            this.status = newStatus;
+            console.log(`${this.name} marked as ${this.status}`)
+            
+        },
+    };
+
+    if (taskDesc) {task.description = taskDesc}
+    if (taskNotes) {task.notes = taskNotes}
+
+    test.items.unshift(task);
+
+    renderTasks();
+    },
+
+    filterTasks(filter: Status | Priority): Task[]{
+    
+    const filteredList: Task[] = [];
+    this.items.forEach(task => {
+        if(task.priority === filter || task.status === filter){
+            filteredList.push(task);
+        }
+    });
+    return filteredList;
+    },
+
+    deleteTask(taskId: string): void{
+    taskList = taskList.filter((task) => task.id !== taskId);
+    console.log(taskList.length);
+    renderTasks();
+    }
+
+
+};
+
+
 
 interface Task {
     id:string;
@@ -70,6 +136,8 @@ addTaskBtn.addEventListener("click", () => {
 
     console.log(priority)
 
+    //test.addTask(taskName,priority)
+    
     addTask(taskName,priority)
 })
 
@@ -77,6 +145,8 @@ let taskList: Task[] = [];
 
 function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, taskNotes?:string): void{
     
+    console.log(crypto.randomUUID());
+
     //Option 1
     const task: Task = {
         id: crypto.randomUUID(),
@@ -128,6 +198,7 @@ function deleteTask(taskId: string): void{
 
 function filterTasks(filter: Status | Priority): Task[]{
     
+    //Filter instead
     const filteredList: Task[] = [];
     taskList.forEach(task => {
         if(task.priority === filter || task.status === filter){
@@ -194,10 +265,11 @@ function renderTasks(): void {
     showAllTasks.addEventListener("click", () => {
         listCheck = undefined;
         renderTasks();
-    })
+    });
 
     switch (listCheck) {
         case Priority.Low:
+            
             placeholderList = filterTasks(Priority.Low)
             break;
 
@@ -223,6 +295,7 @@ function renderTasks(): void {
         showAllTasks,
     )
 
+    //test.items
     placeholderList.forEach(task => {
         const card = document.createElement("div"); 
         card.classList.add("task") 
@@ -230,10 +303,10 @@ function renderTasks(): void {
         if (task.priority === Priority.High) {
             card.classList.add("high-prio") 
         }
-        if (task.priority === Priority.Medium) {
+        else if (task.priority === Priority.Medium) {
             card.classList.add("medium-prio") 
         }
-        if (task.priority === Priority.Low) {
+        else if (task.priority === Priority.Low) {
             card.classList.add("low-prio") 
         }
 
@@ -257,10 +330,7 @@ function renderTasks(): void {
         const taskActive = task.status === Status.Pending || task.status === Status.Started;
         stateButton.textContent = taskActive ? "Start" : "Undo";
 
-        const existingOverlayBtn = card.querySelector(".overlay-btn");
-        if (existingOverlayBtn) {
-            existingOverlayBtn.remove();
-        }
+        
 
         stateButton.addEventListener("click", () =>{
 
@@ -315,6 +385,7 @@ function renderTasks(): void {
     
 }
 
+//test.addTask("Optimize database query performance",Priority.Low,);
 
 addTask("Optimize database query performance",Priority.Low,);
 addTask("Fix login authentication bug",Priority.High,);

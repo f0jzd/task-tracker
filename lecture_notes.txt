@@ -76,3 +76,21 @@ Query selector = hitta första som matchar parametern.
 ----------------------------------
 
 Make array into interface , mehtod ot add/ append task to the list create task thing
+
+////////////////////////////////////////
+kalal argument inkajshd
+
+.checkValidity()
+
+ctrl k ctrl 0
+
+wrappa append för enklare styling
+
+selectedIndex
+
+modulärt, varje fil är en modul, en egen funktion som är lokalt scopat
+
+flera projekt
+
+
+
