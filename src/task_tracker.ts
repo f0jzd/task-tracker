@@ -16,6 +16,13 @@ enum Priority{
     High = "High"
 }
 
+enum ShowAllBy{
+    Low,
+    Medium,
+    High,
+    Sorted
+}
+
 const priorityWeight: Record<Priority, number> = {
     [Priority.Low]: 1,
     [Priority.Medium]: 2,
@@ -34,60 +41,48 @@ interface TaskList{
 
     filterTasks(filter: Status | Priority): Task[];
     deleteTask(taskId:string): void;
+    
 }
 
-let test: TaskList = {
+let taskList: TaskList = {
 
     items: [],
     
-    addTask(
-        taskName:string, 
-        taskPriority: Priority, 
-        taskDesc?: string, 
-        taskNotes?:string): void{
+    addTask( taskName:string, taskPriority: Priority, taskDesc?: string, taskNotes?:string): void{
     
     const task: Task = {
         id: crypto.randomUUID(),
         name: taskName,
         status: Status.Pending,
         priority: taskPriority,
+        ...(taskDesc?{description: taskDesc} : {}),
+        ...(taskNotes?{notes: taskNotes} : {}),
 
-        changeState(newStatus: Status): void {
-            this.status = newStatus;
-            console.log(`${this.name} marked as ${this.status}`)
-            
-        },
+        changeState(newStatus: Status): void { this.status = newStatus; },
     };
 
-    if (taskDesc) {task.description = taskDesc}
-    if (taskNotes) {task.notes = taskNotes}
-
-    test.items.unshift(task);
-
+    taskList.items.unshift(task);
     renderTasks();
-    },
 
+    },
     filterTasks(filter: Status | Priority): Task[]{
-    
-    const filteredList: Task[] = [];
-    this.items.forEach(task => {
-        if(task.priority === filter || task.status === filter){
-            filteredList.push(task);
-        }
-    });
-    return filteredList;
+            //Filter instead
+        const filteredList: Task[] = [];
+        taskList.items.forEach(task => {
+            if(task.priority === filter || task.status === filter){
+                filteredList.push(task);
+            }
+        });
+        return filteredList;
+        
     },
 
     deleteTask(taskId: string): void{
-    taskList = taskList.filter((task) => task.id !== taskId);
-    console.log(taskList.length);
-    renderTasks();
-    }
-
+        this.items = this.items.filter((task) => task.id !== taskId);
+        renderTasks();
+    },
 
 };
-
-
 
 interface Task {
     id:string;
@@ -97,21 +92,17 @@ interface Task {
     description?:string;
     notes?:string;
 
-    // markAsComplete(): void;
-    // markAsStarted(): void;
     changeState(status: Status): void;
-
 }
 
+//Buttons for adding Tasks
 const taskInput = document.querySelector("#task-input") as HTMLInputElement;
 const addTaskBtn = document.querySelector("#add-task") as HTMLButtonElement;
 const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
 const defaultValue = Priority.Low;
 
-
-//Set Priorites based on the enum above
+//Linking Priority to Values
 const priorities = Object.values(Priority);
-
 priorities.forEach(value => {
     const option = document.createElement("option");
 
@@ -119,8 +110,6 @@ priorities.forEach(value => {
 
     option.textContent = value;
     priorityInput.appendChild(option);
-
-    
 
 });
 
@@ -133,80 +122,16 @@ addTaskBtn.addEventListener("click", () => {
     }
 
     const priority = priorityInput.value as Priority;
-
-    console.log(priority)
-
-    //test.addTask(taskName,priority)
+    taskList.addTask(taskName,priority)
     
-    addTask(taskName,priority)
 })
 
-let taskList: Task[] = [];
 
-function addTask(taskName:string, taskPriority: Priority, taskDesc?: string, taskNotes?:string): void{
+function filterTasks(filter: Status | Priority, taskList: TaskList): Task[]{
     
-    console.log(crypto.randomUUID());
-
-    //Option 1
-    const task: Task = {
-        id: crypto.randomUUID(),
-        name: taskName,
-        status: Status.Pending,
-        priority: taskPriority,
-
-        // markAsComplete: function (): void {
-        //     this.status = Status.Completed;
-        //     console.log(`${this.name} marked as complete.`)
-        //     renderTasks();
-        // },
-        // markAsStarted: function (): void{
-        //     this.status = Status.Started;
-        //     console.log(`${this.name} marked as started.`)
-        //     renderTasks();
-        // },
-
-        changeState(newStatus: Status): void {
-            this.status = newStatus;
-            console.log(`${this.name} marked as ${this.status}`)
-            
-        },
-    };
-
-    if (taskDesc) {task.description = taskDesc}
-    if (taskNotes) {task.notes = taskNotes}
-
-    taskList.unshift(task);
-
-
-    // //Option 2
-    // TaskList.push({
-    //     name: taskName,
-    //     status: Status.Pending,
-    //     priority: taskPriority,
-    //     ...(taskDesc?{description: taskDesc} : {}),
-    //     ...(taskNotes?{notes: taskNotes} : {})
-    // })
-
-    renderTasks();
-};
-
-function deleteTask(taskId: string): void{
-    taskList = taskList.filter((task) => task.id !== taskId);
-    console.log(taskList.length);
-    renderTasks();
-}
-
-function filterTasks(filter: Status | Priority): Task[]{
-    
-    //Filter instead
-    const filteredList: Task[] = [];
-    taskList.forEach(task => {
-        if(task.priority === filter || task.status === filter){
-            filteredList.push(task);
-        }
-    });
+    const filteredList = taskList.items.filter(task => task.priority === filter || task.status === filter);
     return filteredList;
-}
+};
 
 //Typeguard, is good apparently?
 function isStatus(value: any): value is Status{
@@ -226,14 +151,24 @@ function createPrioButton(label: string){
     return btn;
 }
 
-function prioPicker(priority: Priority): void{
-    listCheck = priority;
+
+
+function prioPicker(priority: ShowAllBy): void{
+    //listCheck = priority;
+    listDisplay = priority;
+
     renderTasks();
 }
 
 /************************ RENDER ************************** */
 
-let placeholderList: Task[] = taskList;
+
+
+let placeholderList: TaskList = {...taskList};
+//let placeholderList: Task[] = taskList.items;
+
+let listDisplay: ShowAllBy | undefined;
+
 let listCheck: Priority | undefined;
 
 function renderTasks(): void {
@@ -244,45 +179,63 @@ function renderTasks(): void {
     taskInput.value = "";
 
     const totalTasks = document.createElement("h2")
-    totalTasks.textContent = `Total Tasks: ${taskList.length}`
+    totalTasks.textContent = `Total Tasks: ${taskList.items.length}`
     priorityInput.value = defaultValue;
 
 
+    const sortBtn = document.createElement("button") as HTMLButtonElement;
+    sortBtn.textContent = "Sort by Priority"
+
+    
+    
     const lowPriorityList = createPrioButton("Show Low Priority");
     const midPriorityList = createPrioButton("Show Medium Priority");
     const highPriorityList = createPrioButton("Show High Priority");
-    const showAllTasks = createPrioButton("Show All Tasks")
+    const showAllTasks = createPrioButton("Default View")
+    
+    sortBtn.addEventListener("click", () => {
+        renderTasks();
+    })
 
     lowPriorityList.addEventListener("click", () => {
-        prioPicker(Priority.Low)
+        prioPicker(ShowAllBy.Low)
     });
     midPriorityList.addEventListener("click", () => {
-        prioPicker(Priority.Medium)
+        prioPicker(ShowAllBy.Medium)
     });
     highPriorityList.addEventListener("click", () => {
-        prioPicker(Priority.High)
+        prioPicker(ShowAllBy.High)
+    });
+    sortBtn.addEventListener("click", () => {
+        prioPicker(ShowAllBy.Sorted)
     });
     showAllTasks.addEventListener("click", () => {
-        listCheck = undefined;
+        listDisplay = undefined;
         renderTasks();
     });
 
-    switch (listCheck) {
-        case Priority.Low:
+    switch (listDisplay) {
+        case ShowAllBy.Low:
             
-            placeholderList = filterTasks(Priority.Low)
+            placeholderList.items = filterTasks(Priority.Low,taskList)
+            //filterTasks(Priority.Low)
             break;
 
-        case Priority.Medium:
-            placeholderList = filterTasks(Priority.Medium)
+        case ShowAllBy.Medium:
+            placeholderList.items = filterTasks(Priority.Medium,taskList)
+            //filterTasks(Priority.Medium)
             break;
 
-        case Priority.High:
-            placeholderList = filterTasks(Priority.High)
+        case ShowAllBy.High:
+            placeholderList.items = filterTasks(Priority.High,taskList)
+            break;
+        case ShowAllBy.Sorted:
+            placeholderList.items = sortByPriority(taskList.items)
             break;
     
         default:
-            placeholderList = taskList
+            placeholderList.items = taskList.items
+            //filterTasks(Priority.High)
             break;
     }
 
@@ -292,21 +245,22 @@ function renderTasks(): void {
         lowPriorityList,
         midPriorityList,
         highPriorityList,
+        sortBtn,
         showAllTasks,
     )
 
-    //test.items
-    placeholderList.forEach(task => {
+    
+    placeholderList.items.forEach(task => {
         const card = document.createElement("div"); 
         card.classList.add("task") 
 
         if (task.priority === Priority.High) {
             card.classList.add("high-prio") 
         }
-        else if (task.priority === Priority.Medium) {
+        if (task.priority === Priority.Medium) {
             card.classList.add("medium-prio") 
         }
-        else if (task.priority === Priority.Low) {
+        if (task.priority === Priority.Low) {
             card.classList.add("low-prio") 
         }
 
@@ -363,7 +317,7 @@ function renderTasks(): void {
         deleteButton.classList.add("btn");
 
         deleteButton.addEventListener("click", () => {
-            deleteTask(task.id);
+            taskList.deleteTask(task.id);
             renderTasks();
         })
 
@@ -380,25 +334,26 @@ function renderTasks(): void {
         app?.append(card);
 
     });
-
-  
     
 }
 
 //test.addTask("Optimize database query performance",Priority.Low,);
 
-addTask("Optimize database query performance",Priority.Low,);
-addTask("Fix login authentication bug",Priority.High,);
-addTask("Design landing page layout",Priority.Medium,);
-addTask("Refactor API error handling",Priority.Low,);
-addTask("Write unit tests for user service",Priority.High,);
-addTask("Set up CI/CD pipeline",Priority.Low,);
-addTask("Improve mobile responsiveness",Priority.Medium,);
-addTask("Add input validation to forms",Priority.Medium,);
-addTask("Update user profile page UI",Priority.Low,);
+taskList.addTask("Optimize database query performance",Priority.Low,);
+taskList.addTask("Fix login authentication bug",Priority.High,);
+taskList.addTask("Design landing page layout",Priority.Medium,);
+taskList.addTask("Refactor API error handling",Priority.Low,);
+taskList.addTask("Write unit tests for user service",Priority.High,);
+taskList.addTask("Set up CI/CD pipeline",Priority.Low,);
+taskList.addTask("Improve mobile responsiveness",Priority.Medium,);
+taskList.addTask("Add input validation to forms",Priority.Medium,);
+taskList.addTask("Update user profile page UI",Priority.Low,);
 
-addTask("Implement dark mode toggle",Priority.High, "Ben cant see, needs dark mode toggle", "Johns idea");
-addTask("test",Priority.Low);
+taskList.addTask("Implement dark mode toggle",Priority.High, "Ben cant see, needs dark mode toggle", "Johns idea");
+taskList.addTask("test",Priority.Low);
+
+
+
 
 //showTasks();
 // updateTask("test",Priority.Low);
