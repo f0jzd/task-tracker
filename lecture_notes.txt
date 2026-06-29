@@ -91,6 +91,14 @@ selectedIndex
 modulärt, varje fil är en modul, en egen funktion som är lokalt scopat
 
 flera projekt
+/////////////////////////////////
 
+klasser för screnreadeers endast är en grej, kan skippa labels
+
+////////////////////////////////
+
+Spread operator, packa upp det som är i parametern
+
+spread operator kan anvöändas som copy istället för referens
 
 

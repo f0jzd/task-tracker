@@ -16,33 +16,82 @@ let nextId = 1;
 // }
 
 const taskInput = document.querySelector("#task-input") as HTMLInputElement;
-const addButton = document.querySelector("#add-task") as HTMLButtonElement;
+//const addButton = document.querySelector("#add-task") as HTMLButtonElement;
 const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
+const completeBtn = document.querySelectorAll(".compButton");
+
+const form  = document.querySelector("#task-form") as HTMLFormElement;
+
+const errorMessage = document.querySelector("#error-message") as HTMLParagraphElement;
 
 
-addButton.addEventListener("click", () => {
+form.addEventListener("submit", (event) => {//Event innehåller informatioen av som ska hända
+    
+    //event.preventDefault();//Stop, skicka inte iväg, vi tar hand om informationen först
+    handleSubmit(event);
+
+
+    //console.log(event)
+})
+
+function handleSubmit(event: SubmitEvent): void{
+    event.preventDefault();
+
+
+
+    //.value för formulär event
     const taskName = taskInput.value.trim();
-    if(taskName === ""){ 
-        console.log("Rrequierd");
+    const taskPriority = priorityInput.value as TaskPriority;
+
+    
+    const error = validateTaskName(taskName);    
+    
+    if (error !== ""){
+        errorMessage.textContent = error;
         return;
     }
 
-    const priority = priorityInput.value as TaskPriority;
-    
-    addTask(taskName, priority);
- 
-});
+    errorMessage.textContent = "";
 
-const completeBtn = document.querySelectorAll(".compButton");
+    addTask(taskName,taskPriority);
+    renderTasks();
 
-completeBtn.forEach(button => {
+    console.log("Form Submitted")
+}
 
-    
-    console.log("Hej")
-    // button.addEventListener("click" , () => {
-    // console.log("Hej");
-    // });
-});
+function validateTaskName(name: string): string{
+    if (name === ""){
+      return "Taskname is required";  
+    }
+    if (name.length < 3){
+        return "Too short";   
+    }
+    if (name.length > 20 ){
+        return "Too long";   
+    }
+
+    if (taskExists(name)) {
+        return "Task with that name already exists";
+    }
+
+    return "";
+}
+
+function clearForm(): void{
+    taskInput.value = "";
+    priorityInput.value= "medium";
+}
+
+function taskExists(taskName: string):boolean {
+    tasks.forEach(task => {
+        if(task.name.toLowerCase() === taskName.toLowerCase()){
+            return true;
+        }
+    });
+
+    return false;
+}
+
 
 
 
@@ -52,7 +101,7 @@ function addTask(taskName:string, taskPriority: TaskPriority): void{
 
     const newTask: Task= {
         id: nextId,
-        name: taskName,
+        name: taskName,// kan skriva taskName bara 
         status:"pending",
         priority: taskPriority
         //kan skrivar priority bara
@@ -61,11 +110,9 @@ function addTask(taskName:string, taskPriority: TaskPriority): void{
     nextId++;
 
     tasks.push(newTask);
-    renderTasks();
-
     console.log(tasks)
 
-    taskInput.value = "";
+    clearForm();
 }
 
 function completeTask(taskName: string): void{

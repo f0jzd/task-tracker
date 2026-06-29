@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Tracker</title>
     <!-- <script type="module" src="dist/task_tracker.js"></script> -->
-    <script type="module" src="dist/task_tracker.js"></script>
+    <script type="module" src="dist/dag8.js"></script>
 
     <link rel="stylesheet" href="style.css">
 
@@ -13,19 +13,25 @@
 <body>
     <h1 id="title">Task Tracker.</h1>
 
-    <!-- <button id="test-button">Click me</button> -->
-     
 
-    <input id="task-input" type="text" placeholder="New Task">
-    <select name="" id="priority-input">
-        <!-- <option value="low">Low</option>
-        <option value="medium" selected="medium">medium</option>
-        <option value="high">high</option> -->
-    </select>
+    <form action="" id="task-form">
+        <input id="task-input" type="text" placeholder="New Task" required minlength="3">
+        <select name="" id="priority-input">
+            <!--REMOVE OPTIONS IN CASE OF DUPLICATES-->
+            <option value="low">Low</option>
+            <option value="medium" selected="medium">medium</option>
+            <option value="high">high</option>
+        </select>
+        
+        <!-- <button id="add-task">Add Task</button> -->
+        <button type="submit">Add Task</button>
+    
+    </form>
 
-    <button id="add-task">Add Task</button>
+    <p id="error-message"></p>
+
+
     <div id="app"></div>
 
-    <!-- <button>Gerakd</button> -->
 </body>
 </html>
