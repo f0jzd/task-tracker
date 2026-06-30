@@ -82,22 +82,18 @@ function clearForm(): void{
     priorityInput.value= "medium";
 }
 
-function taskExists(taskName: string):boolean {
-    tasks.forEach(task => {
-        if(task.name.toLowerCase() === taskName.toLowerCase()){
-            return true;
-        }
-    });
+function taskExists(name:string): boolean{
+    for (const task of tasks) {
+        if(task.name.toLowerCase() === name.toLowerCase()){
+            return true
 
+        }
+    }
     return false;
 }
 
 
-
-
-
 function addTask(taskName:string, taskPriority: TaskPriority): void{
-
 
     const newTask: Task= {
         id: nextId,
@@ -110,10 +106,37 @@ function addTask(taskName:string, taskPriority: TaskPriority): void{
     nextId++;
 
     tasks.push(newTask);
-    console.log(tasks)
+    //console.log(tasks)
+    saveTasks();
 
     clearForm();
 }
+
+//JSON SAKER
+
+function saveTasks(): void{
+    const json = JSON.stringify(tasks);
+
+    localStorage.setItem(
+        "tasks",
+        json
+    )
+}
+
+
+function loadTasks(): void{
+    const json = localStorage.getItem("tasks");
+
+    if(json === null){
+        return;
+    }
+
+    tasks = JSON.parse(json);
+
+}
+//////
+
+
 
 function completeTask(taskName: string): void{
     tasks.forEach(task => {
@@ -132,11 +155,16 @@ function toggleTask(taskId: number): void{
         }
     });
 
+    saveTasks();
+
     renderTasks();
 }
 
 function deleteTask(taskId: number): void{
     tasks = tasks.filter((task) => task.id !== taskId);
+
+    saveTasks();
+
     renderTasks();
  
 }
@@ -232,5 +260,7 @@ function renderTasks(): void{
         app?.append(card);
     });
 };
+
+loadTasks();
 
 renderTasks();

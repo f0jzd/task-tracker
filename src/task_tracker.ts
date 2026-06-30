@@ -11,9 +11,9 @@ enum Status{
 }
 
 enum Priority{
-    Low = "Low",
+    High = "High",
     Medium = "Medium",
-    High = "High"
+    Low = "Low"
 }
 
 enum ShowAllBy{
@@ -36,11 +36,13 @@ interface TaskList{
     addTask(
         taskName:string, 
         taskPriority: Priority, 
+        dueDate?:string,
         taskDesc?: string, 
         taskNotes?:string): void;
 
     filterTasks(filter: Status | Priority): Task[];
     deleteTask(taskId:string): void;
+    duplicateTask(taskName:string): boolean;
     
 }
 
@@ -48,15 +50,20 @@ let taskList: TaskList = {
 
     items: [],
     
-    addTask( taskName:string, taskPriority: Priority, taskDesc?: string, taskNotes?:string): void{
+    addTask( taskName:string, taskPriority: Priority, dueDate, taskDesc?: string, taskNotes?:string): void{
     
+        console.log(taskDesc,taskNotes)
+
+
     const task: Task = {
         id: crypto.randomUUID(),
         name: taskName,
         status: Status.Pending,
         priority: taskPriority,
+        ...(dueDate? {dueDate} : {}),
         ...(taskDesc?{description: taskDesc} : {}),
         ...(taskNotes?{notes: taskNotes} : {}),
+        
 
         changeState(newStatus: Status): void { this.status = newStatus; },
     };
@@ -80,7 +87,17 @@ let taskList: TaskList = {
     deleteTask(taskId: string): void{
         this.items = this.items.filter((task) => task.id !== taskId);
         renderTasks();
-    },
+    },    
+    duplicateTask(taskName: string): boolean{ 
+        for (const task of this.items) {
+        if(task.name.toLowerCase() === taskName.toLowerCase()){
+            return true
+        }
+    }
+    
+    return false;
+
+    }
 
 };
 
@@ -89,6 +106,7 @@ interface Task {
     name: string;
     status: Status;
     priority: Priority;
+    dateAdded?: string;
     description?:string;
     notes?:string;
 
@@ -96,10 +114,18 @@ interface Task {
 }
 
 //Buttons for adding Tasks
+
+const form = document.querySelector("#task-form") as HTMLFormElement;
+const errorMessage = document.querySelector("#error-message") as HTMLParagraphElement;
+
 const taskInput = document.querySelector("#task-input") as HTMLInputElement;
 const addTaskBtn = document.querySelector("#add-task") as HTMLButtonElement;
 const priorityInput = document.querySelector("#priority-input") as HTMLSelectElement;
-const defaultValue = Priority.Low;
+
+const taskDesc = document.querySelector("#task-desc") as HTMLTextAreaElement;
+const taskNotes = document.querySelector("#task-notes") as HTMLTextAreaElement;
+
+const defaultValue = Priority.Medium;
 
 //Linking Priority to Values
 const priorities = Object.values(Priority);
@@ -113,19 +139,97 @@ priorities.forEach(value => {
 
 });
 
-addTaskBtn.addEventListener("click", () => {
-    const taskName = taskInput.value.trim();
-    if(taskName === ""){ 
-        //Throw warning
-        console.log("Required Input");
+form.addEventListener("submit", (event) => {
+
+    event.preventDefault();
+    handleSubmit(event);
+})
+
+taskInput.addEventListener("input", () => {
+
+   errorMessage.textContent = inputValidation(taskInput.value);
+   taskInput.setCustomValidity(inputValidation(taskInput.value));
+
+   taskInput.classList.remove("invalid-input");
+
+   taskInput.reportValidity();
+   
+
+    if(errorMessage.textContent !== ""){
+        taskInput.classList.add("invalid-input")
+        return;
+    }
+})
+
+
+function handleSubmit(event: SubmitEvent): void{
+
+
+    const formElement = event.target as HTMLFormElement;
+
+    const data = new FormData(formElement);
+    
+    const taskName = (data.get("task-input") ?? "").toString().trim();
+    const taskDesc = (data.get("task-desc") ?? "").toString().trim();
+    const taskNotes = (data.get("task-notes") ?? "").toString().trim();
+    const taskDueDate = (data.get("date-created") ?? "").toString();
+
+    console.log(taskDueDate)
+
+    //const taskName = taskInput.value.trim();
+    
+    errorMessage.textContent = inputValidation(taskName)
+
+    if(errorMessage.textContent !== ""){
         return;
     }
 
-    const priority = priorityInput.value as Priority;
-    taskList.addTask(taskName,priority)
-    
-})
+    //const priority = priorityInput.value as Priority;
+    const priority = data.get("priority-input") as Priority;
 
+    if(taskList.duplicateTask(taskName)){
+        errorMessage.textContent = "Duplicate Found"
+        return;
+    }
+
+    taskList.addTask(
+        taskName,
+        priority,
+        taskDueDate,
+        taskDesc, 
+        taskNotes
+    )
+    
+}
+
+
+function inputValidation(taskName: string): string{
+
+    if(/[^a-zA-Z0-9\s]/.test(taskName)){
+
+        
+
+        return "Contains Invalid characters"
+    }
+
+    if(/^\s+$/.test(taskName)){
+        return "Invalid input"
+    }
+    
+    if(taskName === ""){
+        return "Required Input";
+    }
+
+    if(taskName.length < 3){
+        return "Too short"
+    }
+    if(taskName.length > 40){
+        return "Too Long"
+    }
+
+
+    return "";
+}
 
 function filterTasks(filter: Status | Priority, taskList: TaskList): Task[]{
     
@@ -154,7 +258,6 @@ function createPrioButton(label: string){
 
 
 function prioPicker(priority: ShowAllBy): void{
-    //listCheck = priority;
     listDisplay = priority;
 
     renderTasks();
@@ -165,11 +268,8 @@ function prioPicker(priority: ShowAllBy): void{
 
 
 let placeholderList: TaskList = {...taskList};
-//let placeholderList: Task[] = taskList.items;
-
 let listDisplay: ShowAllBy | undefined;
 
-let listCheck: Priority | undefined;
 
 function renderTasks(): void {
     if (app) {
@@ -177,6 +277,8 @@ function renderTasks(): void {
     }
 
     taskInput.value = "";
+    taskDesc.value = "";
+    taskNotes.value = "";
 
     const totalTasks = document.createElement("h2")
     totalTasks.textContent = `Total Tasks: ${taskList.items.length}`
@@ -270,6 +372,9 @@ function renderTasks(): void {
         const taskState = document.createElement("p");
         taskState.textContent = `Status: ${task.status} | Priority: ${task.priority}`;
 
+        const taskAdded= document.createElement("p");
+        taskAdded.textContent = task.dateAdded ?? null;
+
         const taskNotes = document.createElement("p");
         taskNotes.textContent = task.notes ?? null;
 
@@ -325,6 +430,7 @@ function renderTasks(): void {
         card.append(
             taskTitle,
             taskState,
+            taskAdded,
             taskNotes,
             taskDesc,
             stateButton,

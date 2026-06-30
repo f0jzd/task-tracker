@@ -101,4 +101,32 @@ Spread operator, packa upp det som är i parametern
 
 spread operator kan anvöändas som copy istället för referens
 
+////////////////////////////////////////////////
 
+stringify - > json  
+
+parse -> variabel
+
+localstorage.setitem för att spara
+localstorage.getitem för att hämta
+json.stringify för att array/objekt till text
+json.parse omvandla sträng tillbaks till objekt
+
+spara som string -> stringify 
+läsa som string -> parse
+
+varjae ändring måste kalla och uppdatera tasks
+
+local storage = saker som t.ex. språk, dark mode, shoppping kart, saker som ska sparas. inställningar i guess. 
+SÄTT INTE PASSORD SAKER I LOCAL STORAGE, INTE FÖR VIKTIG INFORMATION
+lagra inte mycket data heller, 50-100 inställningar okej, 1000+ bilder big nono, preferenes och val borde sparas.
+bra för små data
+
+session storage = spara under sessionen, startar man om weblässaren försvinner den, kan användas som små inställningar när man surfar som inte behöver sparas.
+
+
+extension storage = om man har extensions i chrome så sparar den sin data i extension storage. 
+
+
+cookies tl:dr tllhör den tredje sparningtekniken, cookies används för inloggningar, session id, språkinställning, analys.
+cookies skickas med varje https call
