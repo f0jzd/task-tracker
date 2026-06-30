@@ -528,8 +528,14 @@ function renderTasks(): void {
             console.log(`Task: ${task.name} is ${task.status}`);
             card.classList.add("completed");
             stateButton.textContent = "Undo";
-        }else if(task.status === Status.Started || task.status === Status.Pending){
+        }
+        if(task.status === Status.Pending){
             card.classList.remove("completed");
+            stateButton.textContent = "Start";
+        }
+        if(task.status === Status.Started){
+            card.classList.remove("completed");
+            stateButton.textContent = "Complete";
         }
         
         
