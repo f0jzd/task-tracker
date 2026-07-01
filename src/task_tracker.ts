@@ -338,10 +338,14 @@ function createPriorityOptions(prioritySelect: HTMLSelectElement): void {
     highPrio.value = Priority.High
     highPrio.textContent = "Show High Priority";
 
-    prioritySelect.appendChild(prioPlaceholder);
-    prioritySelect.appendChild(lowPrio);
-    prioritySelect.appendChild(midPrio);
-    prioritySelect.appendChild(highPrio);
+    prioritySelect.append(
+        prioPlaceholder,
+        lowPrio,
+        midPrio,
+        highPrio
+    )
+
+
 
     prioritySelect.addEventListener("change", (e) => {
 
@@ -383,7 +387,10 @@ function renderTasks(): void {
 
     const totalTasks = document.createElement("h2")
     totalTasks.textContent = `Total Tasks: ${taskList.items.length}`;
-    priorityInput.value = defaultValue;
+    
+    
+    
+    //priorityInput.value = defaultValue;
 
     const sortBtn = document.createElement("button") as HTMLButtonElement;
     sortBtn.textContent = "Sort by Priority";

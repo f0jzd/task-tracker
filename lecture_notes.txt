@@ -130,3 +130,6 @@ extension storage = om man har extensions i chrome så sparar den sin data i ext
 
 cookies tl:dr tllhör den tredje sparningtekniken, cookies används för inloggningar, session id, språkinställning, analys.
 cookies skickas med varje https call
+
+/////////////////////////////////////////////////////
+

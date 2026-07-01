@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Tracker</title>
     <!-- <script type="module" src="dist/task_tracker.js"></script> -->
-    <script type="module" src="dist/task_tracker.js"></script>
+    <script type="module" src="dist/lektioner/dag11.js"></script>
 
     <link rel="stylesheet" href="style.css">
 
@@ -18,20 +18,23 @@
             <div>
             <input name="task-input" id="task-input" class="task-input" type="text" placeholder="New Task" required> <!--required minlength="3"-->
             <select name="priority-input" id="priority-input">
+                <option value="" selected disabled>Task Priority</option>
                 <!--REMOVE OPTIONS IN CASE OF DUPLICATES-->
-                <!-- <option value="low">Low</option>
+                <option value="low">Low</option>
                 <option value="medium" selected="medium">medium</option>
-                <option value="high">high</option> -->
+                <option value="high">high</option>
             </select>
         
             <!-- <button id="add-task">Add Task</button> -->
             </div>
         
-            <textarea name="task-desc" id="task-desc" rows="10" placeholder="Describe the task"></textarea>
-            <textarea name="task-notes" id="task-notes" rows="10" placeholder="additional notes"></textarea>
+            <!-- <textarea name="task-desc" id="task-desc" rows="10" placeholder="Describe the task"></textarea>
+            <textarea name="task-notes" id="task-notes" rows="10" placeholder="additional notes"></textarea> -->
         
-            <label for="date">Due Date:</label>
-            <input type="date" name="date-created" id="date-created" required>
+            <!-- <div>
+                <label for="date">Due Date:</label>
+                <input type="date" name="date-created" id="date-created" required>
+            </div> -->
         <button type="submit" >Add Task</button>
         </form>
         <p id="error-message"></p>
