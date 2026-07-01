@@ -1,0 +1,17 @@
+// filterTasks(filter: Status | Priority): Task[] {
+//       //Filter instead
+//       const filteredList: Task[] = [];
+//       taskList.items.forEach((task) => {
+//         if (task.priority === filter || task.status === filter) {
+//           filteredList.push(task);
+//         }
+//       });
+//       return filteredList;
+//     },
+
+//   for (const task of this.items) {
+    //     if (task.name.toLowerCase() === taskName.toLowerCase()) {
+    //       return true;
+    //     }
+    //   }
+    //   return false;

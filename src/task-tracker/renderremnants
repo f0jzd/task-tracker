@@ -1,0 +1,283 @@
+// export function createPrioButton(label: string){
+//     const btn = document.createElement("button");
+//     btn.textContent = label;
+//     return btn;
+// }
+
+// export function prioPicker(priority: ShowAllBy): void{
+//     setListDisplay(priority);
+//     renderTasks();
+// }
+
+// function createPriorityOptions(prioritySelect: HTMLSelectElement): void {
+
+//     const prioPlaceholder = document.createElement("option");
+//     prioPlaceholder.value = ""
+//     prioPlaceholder.textContent = "Choose a priority";
+//     prioPlaceholder.disabled = true;
+//     prioPlaceholder.selected = true;
+
+//     const lowPrio = document.createElement("option");
+//     lowPrio.value = Priority.Low
+//     lowPrio.textContent = "Show Low Priority";
+    
+//     const midPrio = document.createElement("option");
+//     midPrio.value = Priority.Medium
+//     midPrio.textContent = "Show Medium Priority";
+    
+//     const highPrio = document.createElement("option");
+//     highPrio.value = Priority.High
+//     highPrio.textContent = "Show High Priority";
+
+//     prioritySelect.append(
+//         prioPlaceholder,
+//         lowPrio,
+//         midPrio,
+//         highPrio
+//     )
+
+
+//     prioritySelect.addEventListener("change", (e) => {
+
+//         switch ((e.target as HTMLSelectElement).value) {
+//           case Priority.Low:
+//             setListDisplay(ShowAllBy.Low);
+//             break;
+//           case Priority.Medium:
+//             setListDisplay(ShowAllBy.Medium);
+//             break;
+//           case Priority.High:
+//             setListDisplay(ShowAllBy.High);
+//             break;
+//         }
+
+//         renderTasks();
+//     });
+
+// }
+
+// export function renderTasks(): void {
+//     if (app) {
+//         app.innerHTML = "";
+//     }
+
+//     loadTasks();
+
+//     renderLayout();
+
+//     if(getPlaceholderList().items.length == 0 || getPlaceholderList().items === undefined){
+//         const noTasks = document.createElement("h2");
+//         noTasks.textContent = "There are no current tasks.";
+//         app?.append(noTasks);
+//     }
+//     else {
+//     getPlaceholderList().items.forEach(task => {
+//         const card = document.createElement("div"); 
+//         card.classList.add("task");
+
+//         if (task.priority === Priority.High) {
+//             card.classList.add("high-prio"); 
+//         }
+//         if (task.priority === Priority.Medium) {
+//             card.classList.add("medium-prio"); 
+//         }
+//         if (task.priority === Priority.Low) {
+//             card.classList.add("low-prio"); 
+//         }
+
+//         const taskTitle = document.createElement("h3");
+//         taskTitle.textContent = task.name;
+
+//         const taskState = document.createElement("p");
+//         taskState.textContent = `Status: ${task.status} | Priority: ${task.priority}`;
+
+//         const taskAdded= document.createElement("p");
+//         taskAdded.textContent = task.timeCreated ?? null;
+
+//         const taskNotes = document.createElement("p");
+//         taskNotes.textContent = task.notes ?? null;
+
+//         const taskDesc = document.createElement("p");
+//         if(taskDesc.textContent = task.description ?? null){
+//             taskDesc.classList.add("task-desc");
+//         }
+        
+//         const stateButton = document.createElement("button");
+//         stateButton.classList.add("btn");
+
+//         const taskActive = task.status === Status.Pending || task.status === Status.Started;
+//         stateButton.textContent = taskActive ? "Start" : "Undo";
+
+//         if(task.status === Status.Completed){
+//             console.log(`Task: ${task.name} is ${task.status}`);
+//             card.classList.add("completed");
+//             stateButton.textContent = "Undo";
+//         }
+//         if(task.status === Status.Pending){
+//             card.classList.remove("completed");
+//             stateButton.textContent = "Start";
+//         }
+//         if(task.status === Status.Started){
+//             card.classList.remove("completed");
+//             stateButton.textContent = "Complete";
+//         }
+        
+        
+        
+
+//         stateButton.addEventListener("click", () =>{
+
+//             switch (task.status) {
+//                 case Status.Pending:
+//                     changeState(task,Status.Started);
+//                     break;
+
+//                 case Status.Started:
+//                     changeState(task,Status.Completed);
+//                     break;
+                    
+//                 case Status.Completed:
+//                     changeState(task,Status.Started);
+//                     break;
+//             }
+
+//             taskState.textContent = `Status: ${task.status} | Priority: ${task.priority}`;
+//         });
+
+
+//         const deleteButton = document.createElement("button");
+//         deleteButton.textContent = "Delete";
+//         deleteButton.classList.add("btn");
+
+//         deleteButton.addEventListener("click", () => {
+//             getList().deleteTask(task.id);
+//             renderTasks();
+//         })
+
+//         const cardBtns = document.createElement("div");
+//         cardBtns.classList.add("card-buttons")
+//         cardBtns.append(stateButton,deleteButton);
+
+
+//         card?.append(
+//             taskTitle,
+//             taskState,
+//             taskAdded,
+//             taskNotes,
+//             taskDesc,
+//             cardBtns
+//         );
+
+//         cardWrapper.append(card)
+//         // app?.append(card);
+
+//     });
+    
+//     }
+
+    
+// }
+
+// function renderTasks(): void{
+//     renderLayout();
+//     renderTaskList(getVisibleTasks);
+// }
+// function renderLayout():void{
+//     //uncomment if more taskdata etc is wanted
+//     // taskDesc.value = "";
+//     // taskNotes.value = "";
+//     taskInput.value = "";
+
+//     const totalTasks = document.createElement("h2")
+//     totalTasks.textContent = `Total Tasks: ${getList().items.length}`;
+
+//     //priorityInput.value = defaultValue;
+
+//     const sortBtn = document.createElement("button") as HTMLButtonElement;
+//     sortBtn.textContent = "Sort by Priority";
+
+//     const lowPriorityList = createPrioButton("Show Low Priority");
+//     const midPriorityList = createPrioButton("Show Medium Priority");
+//     const highPriorityList = createPrioButton("Show High Priority");
+//     const showAllTasks = createPrioButton("Default View");
+
+
+//     const prioritySelect = document.createElement("select") as HTMLSelectElement;
+//     prioritySelect.classList.add("prioritySelector")
+//     createPriorityOptions(prioritySelect);
+
+//     //Uncomment for dynamic option thing
+//     //prioritySelect.value = selectedPriority;
+
+//     const clearBtn = document.createElement("button");
+//     clearBtn.classList.add("clear-btn");
+//     clearBtn.textContent = "Clear Entire List?";
+    
+//     const generateTaskBtn = document.createElement("button");
+//     generateTaskBtn.textContent = "Generate 10 tasks?";
+
+//     generateTaskBtn.addEventListener("click", () => {
+//         generate10tasks();
+//     })
+
+//     clearBtn.addEventListener("click", () => {
+//         localStorage.clear();
+//         renderTasks();
+//     }) 
+    
+//     sortBtn.addEventListener("click", () => {
+//         renderTasks();
+//     })
+
+//     lowPriorityList.addEventListener("click", () => {
+//         prioPicker(ShowAllBy.Low);
+//     });
+//     midPriorityList.addEventListener("click", () => {
+//         prioPicker(ShowAllBy.Medium);
+//     });
+//     highPriorityList.addEventListener("click", () => {
+//         prioPicker(ShowAllBy.High);
+//     });
+//     sortBtn.addEventListener("click", () => {
+//         prioPicker(ShowAllBy.Sorted);
+//     });
+//     showAllTasks.addEventListener("click", () => {
+//         setListDisplay(undefined);
+//         renderTasks();
+//     });
+
+//     switch (getListDisplay()) {
+//         case ShowAllBy.Low:
+//             getPlaceholderList().items = filterTasks(Priority.Low,getList());
+//             break;
+//         case ShowAllBy.Medium:
+//             getPlaceholderList().items = filterTasks(Priority.Medium,getList());
+//             break;
+//         case ShowAllBy.High:
+//             getPlaceholderList().items = filterTasks(Priority.High,getList());
+//             break;
+//         case ShowAllBy.Sorted:
+//             getPlaceholderList().items = sortByPriority(getList().items);
+//             break;
+//         default:
+//             getPlaceholderList().items = getList().items;
+//             break;
+//     }
+
+
+//     const cardWrapper = document.createElement("div");
+//     cardWrapper.classList.add("card-wrapper");
+
+//     app?.append(
+//         totalTasks,
+//         prioritySelect,
+//         lowPriorityList,
+//         midPriorityList,
+//         highPriorityList,
+//         sortBtn,
+//         showAllTasks,
+//         clearBtn,
+//         generateTaskBtn,
+//         cardWrapper
+//     )
+// }
